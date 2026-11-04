@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Braintree: An agentic framework for in-silico vision neuroscience</title>
+<meta name="description" content="Braintree is an agentic framework that autonomously runs multi-experiment studies directly with in-silico models of human visual cortex, using each result to design even stronger tests.">
+<meta name="author" content="Mainak Deb, Ruolin Wang, Alish Dipani, N. Apurva Ratan Murty">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Braintree: An agentic framework for in-silico vision neuroscience">
+<meta property="og:description" content="Braintree is an agentic framework that autonomously runs multi-experiment studies directly with in-silico models of human visual cortex, using each result to design even stronger tests.">
+<meta property="og:image" content="assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:image:alt" content="One Braintree investigation: experiments wave by wave, placed by how much they move PPA more than RSC, with the stimuli of the splits.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Braintree: An agentic framework for in-silico vision neuroscience">
+<meta name="twitter:description" content="Braintree is an agentic framework that autonomously runs multi-experiment studies directly with in-silico models of human visual cortex, using each result to design even stronger tests.">
+<meta name="twitter:image" content="assets/og.jpg">
+<meta name="theme-color" content="#fcfcfa">
+<script>/* white theme by default; ?theme=dark (or the toggle, remembered) gives the night look */ (function(){var q=new URLSearchParams(location.search).get('theme'),s=null;try{s=localStorage.getItem('bt-theme')}catch(e){}var t=q||s||'white';if(q){try{localStorage.setItem('bt-theme',q)}catch(e){}}if(t==='dark'){document.documentElement.dataset.theme='dark';var m=document.querySelector('meta[name=theme-color]');if(m)m.content='#000';}})();</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2312a150'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=h49">
+<link rel="modulepreload" href="assets/page.js?v=h49">
+</head>
+<body>
+
+<a class="skip" href="#circuit">Skip to the figures</a>
+<button class="theme-tg corner" id="theme-tg" type="button" aria-label="Switch to dark mode"><i></i><span>dark</span></button>
+
+<main>
+
+<!-- ============================== title, authors, description ============================== -->
+<header class="titleblock col" id="title">
+  <h1>Braintree</h1>
+  <p class="subtitle" id="subtitle">An agentic framework for in-silico vision neuroscience</p>
+  <ul class="authors" id="authors"></ul>
+  <p class="affs" id="affs"></p>
+  <p class="links" id="links"></p>
+  <div class="desc" id="desc">
+    <p>Vision neuroscience is on the cusp of becoming <b>experiment‑computable</b>. We can present arbitrary images to in‑silico models of the human brain, measure their predicted responses, and repeat this across thousands or even millions of experimental conditions. But no framework yet makes the design of experiments scale with this newfound capacity.</p>
+    <p>Here we introduce <b>Braintree</b>, an agentic framework that runs multi‑experiment studies directly on in‑silico models of human visual cortex. Given a hypothesis, it reasons over the literature, designs an experiment, builds the stimuli, runs them on brain encoding models, analyzes the responses and uses the results to design even stronger tests. It runs on its own and accepts human input at any stage, turning brain models from passive predictors of neural responses into systems that can be actively experimented on.</p>
+  </div>
+</header>
+
+<!-- ============================== Figure 1 : Braintree, as a circuit ============================== -->
+<figure class="wide circuit-fig" id="circuit">
+  <div class="circuit" id="circuit-box" aria-label="Braintree drawn as a circuit: a question enters Knowledge, which passes a plan to Design, stimuli to Execution, readouts to Inference, and the finding back to the start."></div>
+  <p class="circuit-read" id="circuit-read" aria-live="polite"></p>
+</figure>
+
+<!-- ============================== 1 · replicate ============================== -->
+<section class="sec" id="replicate">
+  <div class="col">
+    <h2>Braintree can replicate existing studies.</h2>
+    <p class="body" id="rep-text"></p>
+    <div class="nums" id="rep-nums"></div>
+  </div>
+</section>
+
+<!-- ============================== 2 · regions ============================== -->
+<section class="sec" id="regions">
+  <div class="col">
+    <h2>Braintree finds stimulus manipulations that dissociate brain region pairs.</h2>
+    <p class="body" id="regions-text"></p>
+  </div>
+  <figure class="wide">
+    <div class="pf" id="tree-fig">
+      <div class="pf-top"><nav class="seg" id="tree-seg" aria-label="Region pair"></nav><button class="tr-play" id="tree-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
+      <p class="tr-ask" id="tree-ask"></p>
+      <div class="pf-body stack">
+        <div class="pf-plot" id="tree-plot"></div>
+        <aside class="pf-panel" id="tree-panel" aria-live="polite"></aside>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<!-- ============================== 3 · models ============================== -->
+<section class="sec" id="models">
+  <div class="col">
+    <h2>Braintree finds stimulus manipulations that dissociate ANN models.</h2>
+    <p class="body" id="models-text"></p>
+  </div>
+  <figure class="wide">
+    <div class="pf" id="mod-fig">
+      <div class="pf-top"><nav class="seg" id="mod-seg" aria-label="Region"></nav><button class="tr-play" id="mod-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
+      <p class="tr-ask" id="mod-ask"></p>
+      <div class="pf-body stack">
+        <div class="pf-plot" id="mod-plot"></div>
+        <aside class="pf-panel" id="mod-panel" aria-live="polite"></aside>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<!-- ============================== cite ============================== -->
+<section class="sec" id="cite">
+  <div class="col">
+    <h2>BibTeX</h2>
+    <div class="bib">
+      <div class="bib-bar"><span>deb2026braintree.bib</span><button class="bib-btn" id="copy" type="button">copy</button></div>
+      <pre class="bib-body" id="bibtex"></pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot col" id="foot">
+  <p class="foot-m">Correspondence <span id="mails"></span></p>
+</footer>
+
+<script>/* theme toggle: every colour comes from the stylesheet, so the switch happens in place (no reload, figures keep their state) */
+(function(){var b=document.getElementById('theme-tg');if(!b)return;var h=document.documentElement,m=document.querySelector('meta[name=theme-color]');
+function show(){var dark=h.dataset.theme==='dark';b.querySelector('span').textContent=dark?'light':'dark';b.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');if(m)m.content=dark?'#000':'#fcfcfa';}
+show();
+b.addEventListener('click',function(){var dark=h.dataset.theme!=='dark';if(dark)h.dataset.theme='dark';else delete h.dataset.theme;
+try{localStorage.setItem('bt-theme',dark?'dark':'white')}catch(e){}
+var u=new URL(location.href);if(u.searchParams.has('theme')){u.searchParams.delete('theme');history.replaceState(null,'',u.toString());}show();});})();</script>
+<script type="module" src="assets/circuit.js?v=h52"></script>
+<script type="module" src="assets/page.js?v=h49"></script>
+</body>
+</html>

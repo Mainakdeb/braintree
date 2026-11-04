@@ -1,0 +1,241 @@
+{
+ "title": "Braintree: An agentic framework for in-silico vision neuroscience",
+ "short": "Braintree",
+ "tagline": "An agentic framework for in-silico vision neuroscience",
+ "authors": [
+  {
+   "name": "Mainak Deb",
+   "aff": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Ruolin Wang",
+   "aff": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "Alish Dipani",
+   "aff": [
+    1,
+    2
+   ]
+  },
+  {
+   "name": "N. Apurva Ratan Murty",
+   "aff": [
+    1,
+    2
+   ]
+  }
+ ],
+ "affiliations": [
+  "Center of Excellence in Computational Cognition, Georgia Tech",
+  "School of Psychological and Brain Sciences, Georgia Tech"
+ ],
+ "emails": [
+  "mainak@gatech.edu",
+  "ratan@gatech.edu"
+ ],
+ "lab": {
+  "name": "Murty Lab",
+  "url": "https://murtylab.github.io"
+ },
+ "links": {
+  "paper": "../../shared/braintree.pdf",
+  "biorxiv": "https://www.biorxiv.org/content/10.64898/2026.10.07.756448v1",
+  "code": "#",
+  "data": "#"
+ },
+ "abstract": "Vision neuroscience has many of the ingredients needed to conduct experiments entirely in-silico. We need AI systems that can reason over scientific knowledge, generative methods for creating precisely controlled stimuli, image-computable models that can predict neural responses with increasing accuracy, and tools that can analyze and interpret data. Here we take the first step toward making a vision neuroscience experiment end-to-end computable. We introduce Braintree, an agentic framework that can autonomously run multi-experiment studies directly with in-silico models of human visual cortex. Given a hypothesis, Braintree can reason over the current literature, design an experiment, build a stimulus set from algorithmically manipulated or synthesized stimuli, run the experiment on candidate brain encoding models, analyze the responses and then use the results to design even stronger tests. The entire loop runs autonomously and can accept human input at any stage. We evaluated Braintree on three increasingly open-ended scientific problems. First, Braintree reproduced published findings using their original stimuli and then asked whether the same effects could be replicated with entirely new stimulus sets that it constructed. Second, it designed new experiments to find stimulus dimensions that could drive two brain regions differently, even when those regions otherwise had similar response profiles. Third, it searched for experiments that could tell competing models of the same brain region apart. Experiments discovered using just two models also exposed differences across a much broader set of models, suggesting that Braintree had found more general dimensions along which brain models disagree. Braintree can augment the capabilities of a vision neuroscientist as a verifier for existing hypotheses, a test-bed for new ideas, and/or a tool for generating stimuli that can discriminate between competing hypotheses or models of the brain. Braintree shows how AI agents and brain models can work together to make in-silico vision neuroscience experiment computable, allowing vision scientists to explore many more experiment conditions and identify the most informative ones to test on the human brain.",
+ "tldr": "Braintree turns a question about the visual brain into a chain of experiments it designs, builds, runs on in-silico models of human visual cortex, analyzes, and uses to choose the next experiment.",
+ "protocols": [
+  {
+   "key": "knowledge",
+   "name": "Knowledge",
+   "color": "#D24D33",
+   "persona": "The Scholar",
+   "agents": [
+    "Orchestrator"
+   ],
+   "does": "Reads the literature and turns a question into a grounded experimental goal.",
+   "symbol": "q → g"
+  },
+  {
+   "key": "design",
+   "name": "Design",
+   "color": "#11A6CC",
+   "persona": "The Architect",
+   "agents": [
+    "Planner",
+    "Designer",
+    "Auditor"
+   ],
+   "does": "Turns the goal into an executable experiment and builds its stimuli: retrieval from 28 image datasets (320,000+ images), algorithmic edits, generative edits.",
+   "symbol": "g → E"
+  },
+  {
+   "key": "execution",
+   "name": "Execution",
+   "color": "#603913",
+   "persona": "The Experimentalist",
+   "agents": [
+    "Experimenter",
+    "Auditor"
+   ],
+   "does": "Runs the audited stimuli through image-computable encoding models of human visual cortex fit to fMRI (NSD).",
+   "symbol": "E → D"
+  },
+  {
+   "key": "inference",
+   "name": "Inference",
+   "color": "#008965",
+   "persona": "The Analyst",
+   "agents": [
+    "Data scientist (fixed code)",
+    "Analyzer",
+    "Auditor"
+   ],
+   "does": "Fixed analysis code computes the statistics; the analyzer interprets them and proposes the next, stronger test.",
+   "symbol": "D → f"
+  }
+ ],
+ "loop": "q → g → E → D → f, and f seeds the next question q′",
+ "safeguards": [
+  "Agents that build an experiment never evaluate it; independent auditors check stimuli and specifications before execution.",
+  "All statistics come from fixed analysis code, never from a language model.",
+  "Conditions, comparisons and predictions are recorded before any response is computed; an edit is a new specification.",
+  "Stimuli are never selected by their predicted responses.",
+  "Every result traces back to its exact images, models and agent outputs."
+ ],
+ "models": {
+  "encoder": "image-computable encoding models fit to the Natural Scenes Dataset (NSD), four participants",
+  "backbones": [
+   "CLIP-ResNet50",
+   "DINOv2"
+  ],
+  "regions": [
+   "FFA",
+   "OFA",
+   "PPA",
+   "RSC",
+   "EBA"
+  ],
+  "unit": "standard units (su): 0 = the readout's mean response to its non-preferred category, 1 = to its preferred category",
+  "bound": 0.1
+ },
+ "numbers": {
+  "reproduced": [
+   10,
+   10
+  ],
+  "replicated_of_reproduced": [
+   8,
+   10
+  ],
+  "replicated": [
+   23,
+   36
+  ],
+  "regions_studied": 3,
+  "ffa_ofa": {
+   "dissociated": 11,
+   "tested": 28,
+   "example_toward_ffa": {
+    "label": "low-pass (blur) faces",
+    "D": 0.22
+   },
+   "example_toward_ofa": {
+    "label": "high-pass faces",
+    "D": -0.21
+   }
+  },
+  "ppa_rsc": {
+   "dissociated": 7,
+   "tested": 32,
+   "example_toward_ppa": {
+    "label": "enclosed vs open man-made scenes",
+    "D": 0.19
+   },
+   "example_toward_rsc": {
+    "label": "open vistas vs objects",
+    "D": -0.43
+   }
+  },
+  "models": {
+   "pair": [
+    "CLIP-RN50",
+    "CLIP-ViT-B/32"
+   ],
+   "ppa": [
+    14,
+    36
+   ],
+   "ffa": [
+    5,
+    11
+   ],
+   "eba": [
+    9,
+    15
+   ],
+   "total": [
+    28,
+    62
+   ],
+   "examples": [
+    {
+     "region": "PPA",
+     "label": "phase scramble, coarse 8×8 windows",
+     "D": -0.29,
+     "favours": "CLIP-ViT-B/32"
+    },
+    {
+     "region": "PPA",
+     "label": "phase scramble, fine 32×32 windows",
+     "D": 0.17,
+     "favours": "CLIP-RN50"
+    },
+    {
+     "region": "FFA",
+     "label": "wild-animal faces",
+     "D": -0.43,
+     "favours": "CLIP-ViT-B/32"
+    },
+    {
+     "region": "FFA",
+     "label": "FairFace faces",
+     "D": 0.2,
+     "favours": "CLIP-RN50"
+    },
+    {
+     "region": "EBA",
+     "label": "older men vs men",
+     "D": -0.47,
+     "favours": "CLIP-ViT-B/32"
+    },
+    {
+     "region": "EBA",
+     "label": "children vs adults",
+     "D": 0.43,
+     "favours": "CLIP-RN50"
+    }
+   ]
+  },
+  "generalization": {
+   "rho": 0.54,
+   "n": 62,
+   "p": "6.6e-6",
+   "backbones": 10,
+   "text": "Experiments that pulled CLIP-RN50 and CLIP-ViT-B/32 further apart also produced more disagreement across ten other backbones."
+  },
+  "stimuli_curated": 320000,
+  "datasets": 28
+ },
+ "limitations": "Every result here is a prediction of in-silico brain models; it is a testable hypothesis for the human brain, not a measurement of it.",
+ "bibtex": "@article{deb2026braintree,\n  title   = {Braintree: An agentic framework for in-silico vision neuroscience},\n  author  = {Deb, Mainak and Wang, Ruolin and Dipani, Alish and Murty, N. Apurva Ratan},\n  journal = {bioRxiv},\n  year    = {2026},\n  doi     = {10.64898/2026.10.07.756448},\n  url     = {https://www.biorxiv.org/content/10.64898/2026.10.07.756448v1}\n}",
+ "image_note": "Stimuli shown are the images Braintree used in its runs, drawn from public datasets under their own licences: FFHQ, Places365, THINGS, COCO, NYU Depth V2, ADE20K, AFHQ, HABS, Stanford 40 Actions, 11k Hands and others; edited images are Braintree's own edits of them."
+}
