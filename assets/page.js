@@ -79,10 +79,8 @@ function strips(rows) {
 /* ------------------------------------------------------------------ the investigation tree (Figures 2 and 3) */
 // Each dot is one experiment of a Braintree campaign: across, the wave it ran in; up, D toward side A; down, toward side B.
 // Lines show which experiment led to which; the splits carry their stimuli. The tree grows wave by wave when it comes
-// into view (and on replay); hover a dot for its stimuli and its line of descent. Figure 2 is a pair of regions (every
-// experiment, built edits and bags of natural photographs read in measured brains); Figure 3 is a pair of models of one
-// region, where only built experiments have a model D (a measured read there is the brain's own contrast), so only
-// they are drawn and the lineage runs through the nearest built ancestor.
+// into view (and on replay); hover a dot for its stimuli and its line of descent. Figure 2 is a pair of regions, Figure 3
+// a pair of models of one region; every experiment is built and read on in-silico models.
 
 const TREES = [['ffa_ofa', 'FFA · OFA'], ['ppa_rsc', 'PPA · RSC']];
 const MODEL_TREES = [['models_ppa', 'PPA'], ['models_ffa', 'FFA'], ['models_eba', 'EBA']];
@@ -120,7 +118,7 @@ function sentence(n, A, B, R, bb) {
   if (n.pending) return `${esc(subject(n.label).x)}: no reading.`;
   const { x, cmp, plural } = subject(n.arms ? n.arms.a : n.label), v = plural ? 'activate' : 'activates';   // the named set A when the run named it
   const a = `<b class="ga">${esc(A)}</b>`, b = `<b class="gb">${esc(B)}</b>`, [fav, oth] = n.D > 0 ? [a, b] : [b, a];
-  const vs = cmp || (n.arms ? bb : bb === 'original' ? 'the original images' : bb && bb !== 'comparison photos' ? bb : n.kind === 'measured' ? 'matched photographs' : '');
+  const vs = cmp || (n.arms ? bb : bb === 'original' ? 'the original images' : bb && bb !== 'comparison photos' ? bb : '');
   const than = vs ? `, compared with ${esc(vs)}` : '', even = Math.abs(n.D) < paper.models.bound, sure = n.state === 'hit';
   if (R) return even ? `${esc(x)} ${v} ${esc(R)} about equally in ${a} and ${b}${than}.`
     : `${esc(x)} ${v} ${esc(R)} more in ${fav} than in ${oth}${than}${sure ? '' : ', though not in every person'}.`;
@@ -166,10 +164,10 @@ class InvTree {
     for (const n of nodes) { let d = 0; for (let p = n.par; p; p = p.par) d++; n.depth = d; }
     this.nodes = nodes; this.drawn = by; this.Wv = Math.max(...nodes.map(n => n.wave));
     // the node shown first: the most promising experiment. A finding before a plain hit (confirmed and clean, then
-    // confirmed with a confound, then sent to confirm and not confirmed), a hit before a flat read, a built experiment
-    // before a measured one, the experiment before its confirmation run, then the larger effect
+    // confirmed with a confound, then sent to confirm and not confirmed), a hit before a flat read, the experiment
+    // before its confirmation run, then the larger effect
     const LEVEL = { confirmed: 3, confirmed_confounded: 2, not_confirmed: 1 };
-    const score = n => [LEVEL[n.finding] || 0, n.state === 'hit' ? 1 : 0, n.kind === 'built' ? 1 : 0, n.confirm ? 0 : 1, Math.abs(n.D)];
+    const score = n => [LEVEL[n.finding] || 0, n.state === 'hit' ? 1 : 0, n.confirm ? 0 : 1, Math.abs(n.D)];
     const better = (a, b) => { const x = score(a), y = score(b); for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] > y[i]; return false; };
     const cand = nodes.filter(n => n.state === 'hit' || n.finding);
     this.home = cand.length ? cand.reduce((a, b) => (better(b, a) ? b : a)) : nodes[0];
@@ -277,14 +275,12 @@ class InvTree {
     const [A, B] = this.names, [aa, bb] = armNames(n), o = this.o;
     const hit = n.state === 'hit';
     const R = o.region ? (/\(([^)]+)\)/.exec(this.T.a)?.[1] || '') : null;
-    const f = n.from, drawn = f && this.drawn.has(f.id);
-    const from = !f ? 'from the opening question'
-      : drawn ? `followed from <b>${esc(f.label)}</b>`
-      : `followed from <b>${esc(f.label)}</b>${f.kind === 'measured' ? ' (natural photographs, read in measured brains)' : ''}`;
+    const f = n.from;
+    const from = !f ? 'from the opening question' : `followed from <b>${esc(f.label)}</b>`;
     const kids = n.kids.length ? ` · led to ${n.kids.length} more` : '';
     this.panel.classList.remove('in');
     this.panel.innerHTML = `<div class="tp">
-      <div class="tp-a">${n.kind === 'measured' ? '<p class="pn-id">natural photographs, measured in brains</p>' : ''}
+      <div class="tp-a">
         <p class="pn-q">${sentence(n, A, B, R, bb)}</p><p class="tp-from">${from}${kids}</p></div>
       <div class="tp-b">${strips([[aa, safe(n.thumbs?.a)], [bb, safe(n.thumbs?.b)]])}</div>
       <div class="tp-c"><div class="pn-d"><b class="${hit ? (n.D > 0 ? 'ga' : 'gb') : ''}">${n.pending ? '—' : fD(n.D)}</b><span>${esc(o.dLabel ? o.dLabel(A, B) : `D = Δ${A} − Δ${B}, su`)}</span></div></div>
