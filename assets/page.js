@@ -39,7 +39,7 @@ function titleBlock(p) {
   const live = h => at(h) && at(h) !== '#';
   const link = (k, href, ext) => live(href) ? `<a href="${esc(at(href))}"${ext ? ' target="_blank" rel="noopener"' : ''}>${k}${ext ? ' ↗' : ''}</a>` : `<span class="off" aria-label="${k}: not yet available">${k} · soon</span>`;
   $('links').innerHTML = [
-    link('Paper', live(L.biorxiv) ? L.biorxiv : L.paper, true),   // the bioRxiv preprint once it is up, else the PDF
+    link('Preprint', live(L.biorxiv) ? L.biorxiv : L.paper, true),   // the bioRxiv preprint once it is up, else the PDF
     link('Code', L.code, true),
     live(L.data) && link('Data', L.data, true),
     `<a href="#cite">BibTeX ↓</a>`,

@@ -10,6 +10,11 @@ Dipani, N. Apurva Ratan Murty; Georgia Tech). A static site with no build step: 
 - `shared/data/`: what the page shows, as JSON: `paper.json` (title, authors, abstract, headline numbers, links),
   `replications.json` (the 36 studies), `trees/*.json` (one Braintree campaign each).
 - `shared/img/`: the stimulus thumbnails the trees show.
+- `assets/brain.js`, `brain.css`, `brain.json`: the small 3D brain beside Figures 2 and 3, with the pair's regions marked
+  (drag to turn). Approximate anatomy, not data: the standard fsaverage5 brain, inflated, with FFA, OFA, PPA, OPA and
+  EBA from the maximum-probability map of Rosenke et al. (2021, Cerebral Cortex) and RSC from the group parcel of
+  Julian et al. (2012, NeuroImage); built by `brain/build_brain.py` in the site's working folder. It draws with
+  three.js r170 (MIT licence), kept in `shared/vendor/three/`.
 
 | Tree | Campaign |
 |---|---|

@@ -24,7 +24,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css?v=h49">
-<link rel="modulepreload" href="assets/page.js?v=h49">
+<link rel="stylesheet" href="assets/brain.css?v=b1">
+<link rel="modulepreload" href="assets/page.js?v=h50">
 </head>
 <body>
 
@@ -122,6 +123,7 @@ b.addEventListener('click',function(){var dark=h.dataset.theme!=='dark';if(dark)
 try{localStorage.setItem('bt-theme',dark?'dark':'white')}catch(e){}
 var u=new URL(location.href);if(u.searchParams.has('theme')){u.searchParams.delete('theme');history.replaceState(null,'',u.toString());}show();});})();</script>
 <script type="module" src="assets/circuit.js?v=h52"></script>
-<script type="module" src="assets/page.js?v=h49"></script>
+<script type="module" src="assets/brain.js?v=b1"></script>
+<script type="module" src="assets/page.js?v=h50"></script>
 </body>
 </html>
