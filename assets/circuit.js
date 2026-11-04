@@ -16,7 +16,7 @@ const BLOCKS = [
     parts: [['tool', 'Generative image edit models'], ['agent', 'Independent auditor agent'], ['data', 'image datasets (~400k images)']],
     does: 'turns the plan into stimuli, drawn from image datasets and edited by generative image edit models; an independent auditor agent checks them before anything runs.' },
   { k: 'execution', name: 'Execution', c: '#603913', out: 'readouts',
-    parts: [['code', 'In-silico brain models'], ['data', 'brain data']],
+    parts: [['code', 'In-silico brain models']],
     does: 'runs the stimuli through in-silico models of human visual cortex, trained on brain data, and returns their readouts.' },
   { k: 'inference', name: 'Inference', c: '#008965', out: 'finding',
     parts: [['code', 'Statistics'], ['agent', 'Independent auditor agent']],
