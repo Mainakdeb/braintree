@@ -301,7 +301,7 @@ function treeFigure(trees, list, pre, o) {
     $(pre + '-ask').innerHTML = `“${esc(T.ask)}”${per}.`;
     tree.set(T);
     document.dispatchEvent(new CustomEvent('bt:tree', { detail: { fig: pre, T } }));   // for add-ons such as the brain inset
-  })(list[0][0]);
+  })(o.first || list[0][0]);   // the tab shown first
 }
 
 function investigation(trees) {
@@ -311,6 +311,7 @@ function investigation(trees) {
 function modelInvestigation(trees) {
   const [A, B] = paper.numbers.models.pair.map(short);
   treeFigure(trees, MODEL_TREES, 'mod', {
+    first: 'models_eba',
     keep: n => n.kind === 'built', region: true,
     names: [A, B],
     up: s => `drives ${s} more →`, down: s => `drives ${s} more →`,
