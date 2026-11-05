@@ -74,6 +74,7 @@ h1 { font-family: var(--sans); font-weight: 600; font-size: clamp(64px, 10vw, 11
 /* ------------------------------------------------------------------ figures */
 
 .seg { display: flex; gap: 4px; flex-wrap: wrap; }
+.seg-l { flex: none; margin-right: -6px; white-space: nowrap; color: var(--ink3); }
 .seg button { appearance: none; background: none; border: 1px solid transparent; border-radius: 4px; padding: 4px 10px; font-size: 11.5px; color: var(--ink3); cursor: pointer; transition: color .3s var(--ease), border-color .3s var(--ease); }
 .seg button:hover { color: var(--ink); }
 .seg button[aria-pressed="true"] { color: var(--green); border-color: #173a27; background: rgba(61, 220, 132, .05); }
@@ -385,11 +386,11 @@ h1 { font-size: clamp(56px, 7.2vw, 92px); margin: 0 0 10px; }
 .it-hit circle { fill: transparent; cursor: pointer; pointer-events: auto; }
 .it.has-sel:not(.quiet) .it-es path:not(.on) { stroke-opacity: .16; }
 .it.has-sel:not(.quiet) .it-ns circle:not(.on):not(.hit) { fill-opacity: .35; }
-.it.grown .it-es path { stroke-dashoffset: 0; transition: stroke-dashoffset .7s var(--ease) calc(var(--w) * 380ms - 220ms), stroke .3s ease, stroke-opacity .3s ease; }
-.it.grown .it-ns circle { opacity: 1; transition: opacity .35s ease calc(var(--w) * 380ms + 240ms), fill-opacity .3s ease; }
+.it.grown .it-es path { stroke-dashoffset: 0; transition: stroke-dashoffset .45s var(--ease) calc(var(--w) * var(--step, 200ms) - 120ms), stroke .3s ease, stroke-opacity .3s ease; }
+.it.grown .it-ns circle { opacity: 1; transition: opacity .25s ease calc(var(--w) * var(--step, 200ms) + 180ms), fill-opacity .3s ease; }
 .ip { position: absolute; left: 0; top: 0; width: 0; height: 0; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto; z-index: 2; opacity: 0; --c: var(--neutral); }
 .ip.ga { --c: var(--green); } .ip.gb { --c: var(--blue); }
-.it.grown .ip { opacity: 1; transition: opacity .45s ease calc(var(--w) * 380ms + 420ms); }
+.it.grown .ip { opacity: 1; transition: opacity .3s ease calc(var(--w) * var(--step, 200ms) + 300ms); }
 .ip-f { position: absolute; left: calc(var(--sz) / -2); top: calc(var(--sz) / -2); width: var(--sz); height: var(--sz); overflow: hidden;
   -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent 100%); mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
   transition: transform .3s var(--ease); }
@@ -418,3 +419,6 @@ h1 { font-size: clamp(56px, 7.2vw, 92px); margin: 0 0 10px; }
 .cq-c { fill: var(--green); }
 .kicker { margin: 0 0 12px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); }
 .pn-q b { font-weight: 600; }
+
+/* the Y-axis arrow labels: a little smaller on a phone, so "drives ViT-B/32 more" fits beside the plot */
+@media (max-width: 560px) { .it-ya { font-size: 10px; letter-spacing: 0; } }

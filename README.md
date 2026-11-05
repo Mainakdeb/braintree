@@ -18,8 +18,8 @@ Dipani, N. Apurva Ratan Murty; Georgia Tech). A static site with no build step: 
 
 | Tree | Campaign |
 |---|---|
-| FFA · OFA | `ffa__vs__ofa__v4day1` (25 Oct 2026) |
-| PPA · RSC | `ppa__vs__rsc__v4day1` (28 Oct 2026) |
+| FFA · OFA | `ffa__vs__ofa__v6day1` (4 Nov 2026) |
+| PPA · RSC | `ppa__vs__rsc__v6day1` (4 Nov 2026) |
 | Models of FFA | `models_ffa__clip_rn50__vs__clip_vit_b32__v4h1` (28 Oct 2026) |
 | Models of PPA, EBA | the paper's campaigns |
 

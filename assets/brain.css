@@ -14,8 +14,10 @@
 /* wide screens: the text and the brain as one block, centred on the page (the text shifts left by half the brain's room),
    so the pair sits inside the figure card's edges instead of out in the margin */
 @media (min-width: 1040px) {
-  .br-col { max-width: 724px; left: -134px; min-height: 270px; }   /* 724 + 268 = the figure card's width */
-  .br-col .br { position: absolute; top: -8px; left: calc(100% + 8px); }
+  .br-col { max-width: 724px; left: -134px; min-height: 242px; }   /* 724 + 268 = the figure card's width; the brain's height, so it clears the card */
+  .br-col .br { position: absolute; top: -26px; left: calc(100% + 8px); }
 }
 /* narrower: centred between the paragraph and the figure */
-@media (max-width: 1039px) { .br-col .br { margin: 20px auto 0; } }
+@media (max-width: 1039px) { .br-col .br { margin: 4px auto 16px; } }
+/* the paragraph sits close above its figure */
+.br-col .body { margin-bottom: 24px; }

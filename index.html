@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=h49">
-<link rel="stylesheet" href="assets/brain.css?v=b1">
-<link rel="modulepreload" href="assets/page.js?v=h51">
+<link rel="stylesheet" href="assets/style.css?v=h53">
+<link rel="stylesheet" href="assets/brain.css?v=b3">
+<link rel="modulepreload" href="assets/page.js?v=h59">
 <link rel="canonical" href="https://mainakdeb.github.io/braintree/">
 </head>
 <body>
@@ -73,7 +73,7 @@
   </div>
   <figure class="wide">
     <div class="pf" id="tree-fig">
-      <div class="pf-top"><nav class="seg" id="tree-seg" aria-label="Region pair"></nav><button class="tr-play" id="tree-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
+      <div class="pf-top"><span class="seg-l" id="tree-seg-l">select region pair</span><nav class="seg" id="tree-seg" aria-labelledby="tree-seg-l"></nav><button class="tr-play" id="tree-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
       <p class="tr-ask" id="tree-ask"></p>
       <div class="pf-body stack">
         <div class="pf-plot" id="tree-plot"></div>
@@ -91,7 +91,7 @@
   </div>
   <figure class="wide">
     <div class="pf" id="mod-fig">
-      <div class="pf-top"><nav class="seg" id="mod-seg" aria-label="Region"></nav><button class="tr-play" id="mod-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
+      <div class="pf-top"><span class="seg-l" id="mod-seg-l">select brain region</span><nav class="seg" id="mod-seg" aria-labelledby="mod-seg-l"></nav><button class="tr-play" id="mod-play" type="button" aria-label="Replay the investigation">▶ replay</button></div>
       <p class="tr-ask" id="mod-ask"></p>
       <div class="pf-body stack">
         <div class="pf-plot" id="mod-plot"></div>
@@ -125,8 +125,8 @@ show();
 b.addEventListener('click',function(){var dark=h.dataset.theme!=='dark';if(dark)h.dataset.theme='dark';else delete h.dataset.theme;
 try{localStorage.setItem('bt-theme',dark?'dark':'white')}catch(e){}
 var u=new URL(location.href);if(u.searchParams.has('theme')){u.searchParams.delete('theme');history.replaceState(null,'',u.toString());}show();});})();</script>
-<script type="module" src="assets/circuit.js?v=h53"></script>
-<script type="module" src="assets/brain.js?v=b1"></script>
-<script type="module" src="assets/page.js?v=h51"></script>
+<script type="module" src="assets/circuit.js?v=h56"></script>
+<script type="module" src="assets/brain.js?v=b4"></script>
+<script type="module" src="assets/page.js?v=h59"></script>
 </body>
 </html>

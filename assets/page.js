@@ -78,8 +78,8 @@ function strips(rows) {
 
 /* ------------------------------------------------------------------ the investigation tree (Figures 2 and 3) */
 // Each dot is one experiment of a Braintree campaign: across, the wave it ran in; up, D toward side A; down, toward side B.
-// Lines show which experiment led to which; the splits carry their stimuli. The tree grows wave by wave when it comes
-// into view (and on replay); hover a dot for its stimuli and its line of descent. Figure 2 is a pair of regions, Figure 3
+// Lines show which experiment led to which; the splits carry their stimuli. The tree grows wave by wave, in about two seconds
+// whatever the number of waves, when it comes into view (and on replay); hover a dot for its stimuli and its line of descent. Figure 2 is a pair of regions, Figure 3
 // a pair of models of one region; every experiment is built and read on in-silico models.
 
 const TREES = [['ffa_ofa', 'FFA · OFA'], ['ppa_rsc', 'PPA · RSC']];
@@ -97,8 +97,8 @@ function armNames(n) {
   return m ? [m[1], m[2]] : [n.label || 'these photos', 'comparison photos'];
 }
 
-// The panel's one line: "<manipulation> activates PPA more than RSC", side names in their arrow colours. The subject is the
-// experiment's label ("upside down faces"); "X versus Y" becomes X, compared with Y; the head noun picks activate/activates.
+// The panel's one line: "<manipulation> drives PPA more than RSC", side names in their arrow colours. The subject is the
+// experiment's label ("upside down faces"); "X versus Y" becomes X, compared with Y; the head noun picks drive/drives.
 const HARD = /^(by|with|without|into|as|on|in|to|from|upright|versus|against)$/i;
 const AFTER = /^(by|with|without|into|as|on|in|to|from|upright|alone|small|childlike|down|up|away)$/i;
 const ADJ = /^(indoor|outdoor|night|day|face|close-up|greyscale|grayscale|colour|color|empty|open|enclosed|natural|plain|high|low|coarse|fine|small|large|global|local|upright|inverted|intact|whole|real|fake)$|(ed|al|ic|ous|ful|ive|less)$/i;
@@ -116,7 +116,7 @@ function subject(label) {
 }
 function sentence(n, A, B, R, bb) {
   if (n.pending) return `${esc(subject(n.label).x)}: no reading.`;
-  const { x, cmp, plural } = subject(n.arms ? n.arms.a : n.label), v = plural ? 'activate' : 'activates';   // the named set A when the run named it
+  const { x, cmp, plural } = subject(n.arms ? n.arms.a : n.label), v = plural ? 'drive' : 'drives';   // the named set A when the run named it
   const a = `<b class="ga">${esc(A)}</b>`, b = `<b class="gb">${esc(B)}</b>`, [fav, oth] = n.D > 0 ? [a, b] : [b, a];
   const vs = cmp || (n.arms ? bb : bb === 'original' ? 'the original images' : bb && bb !== 'comparison photos' ? bb : '');
   const than = vs ? `, compared with ${esc(vs)}` : '', even = Math.abs(n.D) < paper.models.bound, sure = n.state === 'hit';
@@ -157,7 +157,7 @@ class InvTree {
     for (const n of nodes) {
       let p = all.get(n.parent);
       while (p && !by.has(p.id)) p = all.get(p.parent);   // through any experiment that is not drawn
-      n.par = p ? by.get(p.id) : null; n.from = all.get(n.parent) || null; n.kids = []; n.anc = false;
+      n.par = p ? by.get(p.id) : null; n.kids = []; n.anc = false;
     }
     for (const n of nodes) if (n.par) n.par.kids.push(n);
     for (const n of nodes) if (n.state === 'hit') for (let p = n.par; p; p = p.par) p.anc = true;
@@ -200,13 +200,17 @@ class InvTree {
     const ax = mob ? 20 : 28, y0 = y(0);
     const edge = n => { const p = n.par || { x: x0, y: y0 }, dx = (n.x - p.x) * 0.5; return `M${p.x.toFixed(1)} ${p.y.toFixed(1)} C${(p.x + dx).toFixed(1)} ${p.y.toFixed(1)} ${(n.x - dx).toFixed(1)} ${n.y.toFixed(1)} ${n.x.toFixed(1)} ${n.y.toFixed(1)}`; };
     const dir = n => (n.D > 0 ? 'ga' : 'gb');
-    const up = (this.o.up || (s => `drives ${s} more →`))(A), down = (this.o.down || (s => `drives ${s} more →`))(B);
+    const rg = /\(([^)]+)\)/.exec(this.T.a)?.[1] || '';   // a model pair's region
+    const up = (this.o.up || (s => `drives ${s} more →`))(A, rg), down = (this.o.down || (s => `drives ${s} more →`))(B, rg);
+    // the axis title: what the number is, then what the grey band means (a short form on a phone)
+    const yt = (this.o.yTitle || ((a, c, r, short) => short ? `${a} change minus ${c} change` : `predicted change in ${a} minus change in ${c}, standard units`))(A, B, rg, mob)
+      + (mob ? '' : ` · grey band: too small to count (under ${b.toFixed(2)})`);
     this.svg.setAttribute('viewBox', `0 0 ${W} ${H}`); this.svg.setAttribute('width', W); this.svg.setAttribute('height', H);
     this.svg.innerHTML = `
       <rect x="${L}" y="${y(b)}" width="${PW}" height="${y(-b) - y(b)}" class="it-band"/>
       ${tk.map(v => `<line x1="${L}" x2="${L + PW}" y1="${y(v)}" y2="${y(v)}" class="it-g${v === 0 ? ' z' : ''}"/><text x="${L - 8}" y="${y(v) + 3.5}" class="it-t" text-anchor="end">${v === 0 ? '0' : fD(v, 1)}</text>`).join('')}
       <text x="${L + PW / 2}" y="${H - Bt + 22}" class="it-w" text-anchor="middle">time →</text>
-      <text x="${L}" y="${Tp - 6}" class="it-w" text-anchor="start">${esc(this.o.yLabel || 'predicted by in-silico brain models')}</text>
+      <text x="${L}" y="${Tp - 6}" class="it-w" text-anchor="start">${esc(yt)}</text>
       <path d="M${ax} ${y0 - 6} V${Tp + 2}" class="it-ar ga"/><path d="M${ax - 4} ${Tp + 9} L${ax} ${Tp + 1} L${ax + 4} ${Tp + 9}" class="it-ah ga"/>
       <path d="M${ax} ${y0 + 6} V${Tp + PH - 2}" class="it-ar gb"/><path d="M${ax - 4} ${Tp + PH - 9} L${ax} ${Tp + PH - 1} L${ax + 4} ${Tp + PH - 9}" class="it-ah gb"/>
       <text transform="translate(${ax - 6} ${y0 - 12}) rotate(-90)" class="it-ya ga">${esc(up)}</text>
@@ -253,6 +257,7 @@ class InvTree {
       q.n.pic = e; this.pics.appendChild(e);
     }
     this.box.style.width = W + 'px'; this.box.style.height = H + 'px'; this.box.style.setProperty('--sz', s2 + 'px');
+    this.box.style.setProperty('--step', Math.round(Math.min(200, 1400 / Wv)) + 'ms');   // one wave's turn: the whole tree grows in about two seconds
     if (REDUCED()) this.box.classList.add('grown', 'still');
     if (this.sel) this.mark(this.sel);
   }
@@ -275,13 +280,10 @@ class InvTree {
     const [A, B] = this.names, [aa, bb] = armNames(n), o = this.o;
     const hit = n.state === 'hit';
     const R = o.region ? (/\(([^)]+)\)/.exec(this.T.a)?.[1] || '') : null;
-    const f = n.from;
-    const from = !f ? 'from the opening question' : `followed from <b>${esc(f.label)}</b>`;
-    const kids = n.kids.length ? ` · led to ${n.kids.length} more` : '';
     this.panel.classList.remove('in');
     this.panel.innerHTML = `<div class="tp">
       <div class="tp-a">
-        <p class="pn-q">${sentence(n, A, B, R, bb)}</p><p class="tp-from">${from}${kids}</p></div>
+        <p class="pn-q">${sentence(n, A, B, R, bb)}</p></div>
       <div class="tp-b">${strips([[aa, safe(n.thumbs?.a)], [bb, safe(n.thumbs?.b)]])}</div>
       <div class="tp-c"><div class="pn-d"><b class="${hit ? (n.D > 0 ? 'ga' : 'gb') : ''}">${n.pending ? '—' : fD(n.D)}</b><span>${esc(o.dLabel ? o.dLabel(A, B) : `D = Δ${A} − Δ${B}, su`)}</span></div></div>
     </div>`;
@@ -295,7 +297,8 @@ function treeFigure(trees, list, pre, o) {
   const by = new Map(trees.map(t => [t.id, t]));
   seg($(pre + '-seg'), list.filter(([id]) => by.has(id)).map(([id, label]) => ({ k: id, label })), id => {
     const T = by.get(id);
-    $(pre + '-ask').innerHTML = `“${esc(T.ask)}” · every node tests a hypothesis.`;
+    const tm = T.timing, per = tm ? ` · <span title="${tm.nodes} nodes in ${tm.hours.toFixed(1)} hours of running">about ${Math.max(1, Math.round(tm.per_node_min))} min per node</span>` : '';
+    $(pre + '-ask').innerHTML = `“${esc(T.ask)}”${per}.`;
     tree.set(T);
     document.dispatchEvent(new CustomEvent('bt:tree', { detail: { fig: pre, T } }));   // for add-ons such as the brain inset
   })(list[0][0]);
@@ -310,7 +313,8 @@ function modelInvestigation(trees) {
   treeFigure(trees, MODEL_TREES, 'mod', {
     keep: n => n.kind === 'built', region: true,
     names: [A, B],
-    up: s => `${s} predicts more →`, down: s => `${s} predicts more →`,
+    up: s => `drives ${s} more →`, down: s => `drives ${s} more →`,
+    yTitle: (a, c, r, short) => short ? `${r}: ${a} minus ${c}` : `change in ${r} predicted by ${a} minus by ${c}, standard units`,
     split: 'split the models', agree: 'the models agree',
     dLabel: (a, b) => `D = Δ${a} − Δ${b}, su`,
   });

@@ -10,25 +10,25 @@ const NS = 'http://www.w3.org/2000/svg';
 // parts: [kind, label], kind one of agent | code | tool | data; one row each, evenly spaced
 const BLOCKS = [
   { k: 'knowledge', name: 'Knowledge', c: '#D24D33', out: 'plan',
-    parts: [['agent', 'Scientist'], ['data', 'Literature Scraper'], ['data', 'Past Runs']],
-    does: 'the scientist reads the question, the literature and past runs, and writes a plan: what to compare, in which regions, and what each hypothesis predicts.' },
+    parts: [['agent', 'Scientist'], ['agent', 'Hypothesis council (5 agents)'], ['agent', 'Literature reader'], ['agent', 'Look-back reviewer'], ['data', 'Past runs']],
+    does: 'the scientist reads the question, the literature and past runs, and writes a plan: what to compare, in which regions, and what each hypothesis predicts. A council of five agents, each with its own stance, proposes the first hypotheses and votes on the boldest; a literature reader gathers what papers report; every three waves a look-back reviewer reads all the results so far for patterns and opens new threads.' },
   { k: 'design', name: 'Design', c: '#11A6CC', out: 'stimuli',
-    parts: [['tool', 'Generative image edit models'], ['agent', 'Independent auditor agent'], ['data', 'image datasets (~400k images)']],
-    does: 'turns the plan into stimuli, drawn from image datasets and edited by generative image edit models; an independent auditor agent checks them before anything runs.' },
+    parts: [['tool', 'Generative image edit models'], ['agent', 'Image checker (auditor)'], ['data', 'image datasets (~400k images)']],
+    does: 'turns the plan into stimuli, drawn from image datasets and edited by generative image edit models. An image checker agent makes sure each base image shows what the edit needs, then counts the edited images that really show the change; too few, and the result is not used as evidence.' },
   { k: 'execution', name: 'Execution', c: '#603913', out: 'readouts',
     parts: [['code', 'In-silico brain models']],
     does: 'runs the stimuli through in-silico models of human visual cortex, trained on brain data, and returns their readouts.' },
   { k: 'inference', name: 'Inference', c: '#008965', out: 'finding',
-    parts: [['code', 'Statistics'], ['agent', 'Independent auditor agent']],
-    does: 'fixed statistics code turns the readouts into an effect and its intervals; an independent auditor agent checks the reading, and the finding seeds the next question.' },
+    parts: [['code', 'Statistics'], ['agent', 'Blind judge (auditor)']],
+    does: 'fixed statistics code turns the readouts into an effect and its intervals. Before a result is confirmed on held-out images, a blind judge agent checks that the change was really made, seeing the images and one sentence but never the regions or the direction. The finding seeds the next question.' },
 ];
 // the orchestrator: the hub on the loop's corner, where the question comes in and each finding comes back
 const ORCH = { name: 'Orchestrator', does: 'takes the human\'s question and hands it to Knowledge; each finding comes back to it, and it decides what to ask next.' };
 const OR = 16, OSIZE = 26; // its patch of page colour (half width) and its icon size
-// questions people asked Braintree (the campaigns and a replication on this page)
+// questions people ask Braintree: the two kinds of campaign on this page, then one of them
 const QUESTIONS = [
-  'What drives PPA and RSC apart?',
-  'Where do two models of FFA disagree?',
+  'What drives brain regions A and B apart?',
+  'Where do brain models A and B disagree?',
   'What drives FFA and OFA apart?',
 ];
 const TYPE_MS = 42, HOLD_MS = 520, REST_MS = 700, LAPS = 2, PERIOD = 8; // PERIOD: seconds per turn of the loop
